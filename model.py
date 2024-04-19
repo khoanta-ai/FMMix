@@ -3,15 +3,15 @@ import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
 from orig_mixup import mixup_hidden
-from features_aug import fm_mix_level, ffmix1, ffmix2, ffmix3, ffmix4
+from features_aug import fm_mix_level, fmmix1, fmmix2, fmmix3, fmmix4
 
 FM_augmentation_dict = {
     "mixup_hidden":mixup_hidden,
     'fm_mix_level': fm_mix_level,
-    "ffmix1": ffmix1,
-    "ffmix2": ffmix2,
-    "ffmix3": ffmix3,
-    "ffmix4": ffmix4,
+    "fmmix1": fmmix1,
+    "fmmix2": fmmix2,
+    "fmmix3": fmmix3,
+    "fmmix4": fmmix4,
 }
 
 
@@ -87,7 +87,6 @@ class PreActResNet(nn.Module):
         self.num_classes = num_classes
 
         self.args = args
-        self.is_top = self.args.is_top
         self.is_fm_mixup = self.args.is_fm_mixup
         
         if self.args.fm_mix_flag:

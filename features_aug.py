@@ -72,7 +72,7 @@ def fm_mix_level(args, x: torch.Tensor, target: torch.Tensor):
     return x, None, computation_loss_components
 
 
-def ffmix2(args, x: torch.Tensor, target: torch.Tensor):
+def fmmix2(args, x: torch.Tensor, target: torch.Tensor):
     # Assuming x is your input tensor with shape (B, C, H, W)
     B, C, H, W = x.shape
     lam = args.alpha
@@ -128,7 +128,7 @@ def ffmix2(args, x: torch.Tensor, target: torch.Tensor):
     return x, computation_loss_components
 
 
-def ffmix1(args, x: torch.Tensor, target: torch.Tensor):
+def fmmix1(args, x: torch.Tensor, target: torch.Tensor):
     # Assuming x is your input tensor with shape (B, C, H, W)
     B, C, H, W = x.shape
     lam = args.alpha
@@ -198,14 +198,14 @@ def get_ks_maxft(x_size):
     return int(ks), int(maxft)
 
 
-def ffmix3(args, x:torch.Tensor, target:torch.Tensor):
+def fmmix3(args, x:torch.Tensor, target:torch.Tensor):
     B, C, H, W= x.size()
     kernel_size, max_features = get_ks_maxft(W)
     k_max_features = torch.randint(low=0, high=max_features+1, size=[])
     if k_max_features == 0:
         attention_mask = torch.zeros_like(x)
     else:
-        attention_mask = generate_top_k_masks(x, k_max_features, kernel_size, is_min=args.is_min)
+        attention_mask = generate_top_k_masks(x, k_max_features, kernel_size, is_min=False)
     
     indices = torch.randperm(x.size(0))
     attention_mask = attention_mask[indices]
@@ -222,7 +222,7 @@ def ffmix3(args, x:torch.Tensor, target:torch.Tensor):
     return x, computation_loss_components
 
 
-def ffmix4(args, x:torch.Tensor, target:torch.Tensor):
+def fmmix4(args, x:torch.Tensor, target:torch.Tensor):
     B, C, H, W= x.size()
     kernel_size, max_features = get_ks_maxft(W)
     k_max_features = torch.randint(low=0, high=max_features+1, size=[])
@@ -230,7 +230,7 @@ def ffmix4(args, x:torch.Tensor, target:torch.Tensor):
     if k_max_features == 0:
         attention_mask = torch.zeros_like(x)
     else:
-        attention_mask = generate_top_k_masks(x, k_max_features, kernel_size, is_min=args.is_min)
+        attention_mask = generate_top_k_masks(x, k_max_features, kernel_size, is_min=False)
     indices = torch.randperm(x.size(0))
     attention_mask = attention_mask[indices]
     shift_tar = x - x.min(dim=3, keepdim=True)[0].min(dim=2, keepdim=True)[0]

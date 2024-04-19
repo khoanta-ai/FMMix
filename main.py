@@ -28,7 +28,7 @@ np.random.seed(seed)
 torch.backends.cudnn.deterministic = True
 torch.backends.cudnn.benchmark = False
 
-device = "cuda" #if torch.cuda.is_available() else 'cpu'
+device = "cuda" if torch.cuda.is_available() else 'cpu'
 
 
 def test(args, model, dataloaders, history):
@@ -289,7 +289,7 @@ def run(args, model, optimizer, dataloaders, path):
 
 def experiment(args):
     args.device = device
-    dataloaders = load_data(args, args.batch_size, args.dataset, None, None)
+    dataloaders = load_data(args, args.batch_size, args.dataset)
 
     if args.dataset.lower() == "cifar100":
         num_classes = 100
@@ -317,7 +317,7 @@ def experiment(args):
     exp_path = os.path.join(args.save_path, name)
     os.makedirs(exp_path, exist_ok=True)
     
-    with open(os.path.join(exp_path, 'config.txt'), 'w') as f:
+    with open(os.path.join(exp_path, 'config.json'), 'w') as f:
         json.dump(args.__dict__, f, indent=4)
 
     
