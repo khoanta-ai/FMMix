@@ -1,10 +1,10 @@
-# Enhancing Feature Diversity: MixUp, CutMix, and FMMix for Diversifying Feature Representations
+# FMMix: A Novel Augmentation Strategy for Enhancing Feature Diversity to Boost Model Generalization
 [![Framework: PyTorch](https://img.shields.io/badge/Framework-PyTorch-orange.svg)](https://pytorch.org/)
 ![Contributing](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)
 ![Ask Me Anything !](https://img.shields.io/badge/Ask%20me-anything-1abc9c.svg)
 
 
-This repository is the official implementation of [Enhancing Feature Diversity: MixUp, CutMix, and FMMix for Diversifying Feature Representations](). 
+This repository is the official implementation of [FMMix: A Novel Augmentation Strategy for Enhancing Feature Diversity to Boost Model Generalization](). 
 
 Khoa Tho Anh Nguyen, Ngoc Hong Tran, Vinh Quang Dinh
 
