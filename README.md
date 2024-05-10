@@ -178,7 +178,7 @@ Run `python main.py --help` for a complete listing of command line parameters an
 
 ## Citation
  
-If you found OneFormer useful in your research, please consider starring ⭐ us on GitHub and citing us in your research!
+If you found FMMix useful in your research, please consider starring ⭐ us on GitHub and citing us in your research!
 
 ```bibtex
 @article{
