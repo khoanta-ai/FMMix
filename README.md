@@ -59,7 +59,7 @@ The table outlines the combinations of our proposed feature map and label mixing
 
 **Table 2 (in our paper):** Performance comparison of Mixup and CutMix techniques across various combinations of hidden layers on CIFAR-100. The highest accuracies are highlighted in bold, and entries in green indicate an enhancement over the baseline accuracy of 74.57%. augmentation.
 
-| Layer     | Mixup   | CutMix     |     |
+| Layer     | Mixup   | CutMix     |     
 |-----------------------|------------|------------|----|
 | [1, 2]      | 78.45 (+3.88) <br> [Download](https://drive.google.com/drive/folders/1TGB5-XLOMarmHMX0M5Ant-CN4VONa4At?usp=drive_link)      | 79.02 (+4.45) <br> [Download](https://drive.google.com/drive/folders/1YA-svuPnPBML7dM9nQgSZ3BGeBEo_7KP?usp=drive_link)     | 
 | [2, 3]     | 78.35 (+3.78) <br> [Download](https://drive.google.com/drive/folders/1KrrFs0a6WnKGgwG3VykswwRUcA4TqmxH?usp=drive_link)      | 78.10 (+3.53) <br> [Download](https://drive.google.com/drive/folders/1m_49GhCy3PlPgtBhC-0V4NaQ8eWLBWIH?usp=drive_link)      | 
