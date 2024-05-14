@@ -71,7 +71,7 @@ The table outlines the combinations of our proposed feature map and label mixing
 **D Table 5 (in our paper):** Performance comparison of the four proposed FMMix techniques across various hidden layers on CIFAR-100. The highest accuracies are highlighted in bold, and entries in green indicate an enhancement over the baseline accuracy of 74.57%.
 
 | Layer     | FMMix1   | FMMix2     |  FMMix3   | FMMix4| |
-|-----------------------|------------|------------|----|------------|------------|
+|-----------------------|------------|------------|----|------------|
 | [1]     | 79.48 (+4.91)    <br> [Download](https://drive.google.com/drive/folders/1GPUtvdkKBVEhCyGCOp99FOA02UmA2blR?usp=drive_link)  | 78.85 (+4.28)       <br> [Download](https://drive.google.com/drive/folders/1h0yHozoTiWkr5z8S_AV3ea-ebhhpDzgM?usp=drive_link)  | 78.92 (+4.35) <br> [Download](https://drive.google.com/drive/folders/1QOxz_9MDwuKeTkQzorpkleOIVbu_wOll?usp=drive_link)  | 78.68 (+4.11) <br> [Download](https://drive.google.com/drive/folders/1MeQdwHIsJ3qplrsVjHlZEurgCwJFZsa_?usp=drive_link)  |
 | [2] | 78.06 (+3.49)      <br> [Download](https://drive.google.com/drive/folders/1o3EP3TWri4-3wCpQCcGVb3BeO-COztxY?usp=drive_link)  |  78.45 (+3.88)      <br> [Download](https://drive.google.com/drive/folders/1UzwNUNk_jWpLlEDitXgJ6V_V_xuKHvHR?usp=drive_link)  | 78.32 (+3.75) <br> [Download](https://drive.google.com/drive/folders/1Y2Cn_ja3yoidDPWUQ9fnpUkS9jlvuABp?usp=drive_link)  | 78.79 (+4.22) <br> [Download](https://drive.google.com/drive/folders/19j7IDUrLO7FmOhSHqinTfBT5DQkQCJzx?usp=drive_link)  |
 | [3] | 76.31 (+1.74)       <br> [Download](https://drive.google.com/drive/folders/1HxnaQDWEtYt_xh32vlhZGz6N-By9BKoI?usp=drive_link)  |  Fail      | 75.52 (+0.95) <br> [Download](https://drive.google.com/drive/folders/1o_dbuLhn-eL1Mk1Xi0Xi6Uim0qPaoDVG?usp=drive_link)  | 75.90 (+1.33) <br> [Download](https://drive.google.com/drive/folders/1FmKfKlpptZQU7GSZC06P-rREjV-odBvE?usp=drive_link)  |
@@ -79,8 +79,8 @@ The table outlines the combinations of our proposed feature map and label mixing
 
 **Table 6 (in our paper):** Performance comparison of the four proposed FMMix techniques across various combinations of hidden layers on CIFAR-100. The highest accuracies are highlighted in bold, and entries in green indicate an enhancement over the baseline accuracy of 74.57%.
 
-| Layer     | FMMix1   | FMMix2     |  FMMix3   | FMMix4| |
-|-----------------------|------------|------------|----|----|----|
+| Layer     | FMMix1   | FMMix2     |  FMMix3   | FMMix4| 
+|-----------------------|------------|------------|----|----|
 | [1, 2]      | 79.73 (+5.16)       <br> [Download](https://drive.google.com/drive/folders/1sEHOpIgDfC2w1KDAS64bPCzoTqk4MZO1?usp=drive_link) | 79.51 (+4.94)     <br> [Download](https://drive.google.com/drive/folders/1MCvpYJA92oNPe_xYxcaqc3ScYROEjfbJ?usp=drive_link) | 79.07 (+4.50) <br> [Download](https://drive.google.com/drive/folders/19R93qbms9POty2eR2HyqBfImgvLrckdf?usp=drive_link) | 78.44 (+3.87) <br> [Download](https://drive.google.com/drive/folders/1OJAR3XVycx2Zm979RgmFaOuD8vj6ClN6?usp=drive_link) |
 | [2, 3]     | 79.05 (+4.48)    <br> [Download](https://drive.google.com/drive/folders/1-eGl5ZWkj7Cr1-rJR82AzO1tlYyPXJCy?usp=drive_link) | 78.93 (+4.36)       <br> [Download](https://drive.google.com/drive/folders/1jDyIlUa0AfpgP1sW-uSrpkoLcrW0xZUw?usp=drive_link) | 79.08 (+4.51) <br> [Download](https://drive.google.com/drive/folders/1RUUT4rPKqtloA02JkeJ0dP82-4iPNHXU?usp=drive_link) | 78.69 (+4.12) <br> [Download](https://drive.google.com/drive/folders/1aLH6cPsACO9NZSDBwAF4Pai1vQT28jUW?usp=drive_link) |
 | [3, 4] |  77.64 (+3.07)     <br> [Download](https://drive.google.com/drive/folders/15-izygUFHgIH7LDYvAHtXkbKLSxy90RI?usp=drive_link) | 77.52 (+2.95)        <br> [Download](https://drive.google.com/drive/folders/1YELDt2P4R9ShP4abgWM4spQOrESTKYQI?usp=drive_link) | 76.91 (+2.34) <br> [Download](https://drive.google.com/drive/folders/1WxqTLXcbKBrt9KAeJyzfynhZbEL22JpB?usp=drive_link) | 76.45 (+1.88) <br> [Download](https://drive.google.com/drive/folders/17ZItrwLn-8Lv6Qe2sHiEFs5vBm3ScalC?usp=drive_link) |
@@ -91,8 +91,8 @@ The table outlines the combinations of our proposed feature map and label mixing
 
 **Table 7 (in our paper):** Test Accuracy Comparison of Mixup, Manifold, CutMix, and FMMix1 on CIFAR-100 and TinyImageNet Datasets. Entries in bold represent the highest accuracy achieved for each method. Green highlights denote improvements in accuracy, while red highlights signify decreases, all in comparison to the baseline accuracy of 74.57%.
 
-| Layer     | CIFAR100   | TINY200     |     |
-|-----------------------|------------|------------|----|
+| Layer     | CIFAR100   | TINY200     | 
+|-----------------------|------------|------------|
 | Baseline      | 74.57 (0.00)      <br> [Download](https://drive.google.com/drive/folders/1eKjQq5g7AsQCNE0_dhtjb_2K2EHVx3E7?usp=drive_link) | 58.46 (0.00)      <br> [Download](https://drive.google.com/drive/folders/1zChwzvoExiTBk06udibe1TE_BIP40gDB?usp=drive_link) |
 | Mixup   | 77.48 (+2.91)      <br> [Download](https://drive.google.com/drive/folders/1D0fwSMyXuo1YIbwULDEk_1tDIGYGtOAi?usp=drive_link) | 60.84 (+2.38)     <br> [Download](https://drive.google.com/drive/folders/1ebSnyQ2xllb3ZPELDdAIKLSI1ARfl-sM?usp=drive_link) |
 | *Manifold Mixup_[0, 1, 2] | 76.86 (+2.29)      <br> [Download](https://drive.google.com/drive/folders/1EQLdHd-6dIfU9Nd2_C1fhjIByNLevUX_?usp=drive_link) | 54.43 (-4.03)      <br> [Download](https://drive.google.com/drive/folders/19BbdMUsCV1jKVzVS-4X0Twezd2n-7hRf?usp=drive_link) |
@@ -107,8 +107,8 @@ The table outlines the combinations of our proposed feature map and label mixing
 | CutMix + FMMix1  | 79.74 (+5.17)     <br> [Download](https://drive.google.com/drive/folders/1IJ9d_SW96Ja2qdmzFbbviW8svUgKsn8G?usp=drive_link) | 65.14 (+6.68)      <br> [Download](https://drive.google.com/drive/folders/1KkudHI2o5gokFd4xRA2_mQRZwz_CGM6y?usp=drive_link) |
 
 
-<!-- | Layer     | Mixup   | CutMix     |     |
-|-----------------------|------------|------------|----|
+<!-- | Layer     | Mixup   | CutMix     |     
+|-----------------------|------------|------------|
 | [0]*      | 26.0       | 25.2       | [Download]() |
 | [1]     | 18.8       | 18.4       | [Download]() |
 | [2] | 17.1       | 16.0       | [Download]() |
