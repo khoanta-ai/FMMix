@@ -70,7 +70,7 @@ The table outlines the combinations of our proposed feature map and label mixing
 
 **D Table 5 (in our paper):** Performance comparison of the four proposed FMMix techniques across various hidden layers on CIFAR-100. The highest accuracies are highlighted in bold, and entries in green indicate an enhancement over the baseline accuracy of 74.57%.
 
-| Layer     | FMMix1   | FMMix2     |  FMMix3   | FMMix4| |
+| Layer     | FMMix1   | FMMix2     |  FMMix3   | FMMix4| 
 |-----------------------|------------|------------|----|------------|
 | [1]     | 79.48 (+4.91)    <br> [Download](https://drive.google.com/drive/folders/1GPUtvdkKBVEhCyGCOp99FOA02UmA2blR?usp=drive_link)  | 78.85 (+4.28)       <br> [Download](https://drive.google.com/drive/folders/1h0yHozoTiWkr5z8S_AV3ea-ebhhpDzgM?usp=drive_link)  | 78.92 (+4.35) <br> [Download](https://drive.google.com/drive/folders/1QOxz_9MDwuKeTkQzorpkleOIVbu_wOll?usp=drive_link)  | 78.68 (+4.11) <br> [Download](https://drive.google.com/drive/folders/1MeQdwHIsJ3qplrsVjHlZEurgCwJFZsa_?usp=drive_link)  |
 | [2] | 78.06 (+3.49)      <br> [Download](https://drive.google.com/drive/folders/1o3EP3TWri4-3wCpQCcGVb3BeO-COztxY?usp=drive_link)  |  78.45 (+3.88)      <br> [Download](https://drive.google.com/drive/folders/1UzwNUNk_jWpLlEDitXgJ6V_V_xuKHvHR?usp=drive_link)  | 78.32 (+3.75) <br> [Download](https://drive.google.com/drive/folders/1Y2Cn_ja3yoidDPWUQ9fnpUkS9jlvuABp?usp=drive_link)  | 78.79 (+4.22) <br> [Download](https://drive.google.com/drive/folders/19j7IDUrLO7FmOhSHqinTfBT5DQkQCJzx?usp=drive_link)  |
