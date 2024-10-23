@@ -121,7 +121,16 @@ class PreActResNet(nn.Module):
                                                                                   target=target)                
         else: 
             if self.is_fm_mixup:
-                raise Exception("Mixup switch is not implmented")
+                # raise Exception("Mixup switch is not implmented")
+                out = x
+                p_tar = 1
+                p_src = 0
+                target_shuffled = target
+                computation_loss_components = [
+                    2,
+                    [p_tar, p_src],
+                    [target, target_shuffled]
+                ]
         return out, computation_loss_components
 
 
@@ -167,3 +176,5 @@ class PreActResNet(nn.Module):
 def ResNet18(args, num_classes, stride=1):
     return PreActResNet(PreActBlock, [2, 2, 2, 2], args=args, num_classes=num_classes, stride=stride)
 
+def ResNet50(args, num_classes, stride=1):
+    return PreActResNet(PreActBottleneck, [3,4,6,3], args=args, num_classes=num_classes, stride=stride)

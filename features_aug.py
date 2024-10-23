@@ -69,7 +69,85 @@ def fm_mix_level(args, x: torch.Tensor, target: torch.Tensor):
         [target, target_shuffled]
     ]
 
-    return x, None, computation_loss_components
+    return x, computation_loss_components
+
+
+def fmmix1(args, x: torch.Tensor, target: torch.Tensor):
+    # Assuming x is your input tensor with shape (B, C, H, W)
+    B, C, H, W = x.shape
+    lam = args.alpha
+    # Step 1: Shuffle x across B
+    shuffle_idx = torch.randperm(B)
+    x_shuffle = x[shuffle_idx]
+
+    # Step 2: Find the highest value in each feature map of x_shuffle
+    max_val_indices = torch.argmax(x_shuffle.view(B, C, -1), dim=2) # Indices of max values
+    max_indices_unraveled = torch.stack((max_val_indices // W, max_val_indices % W), dim=-1)
+
+    # Step 3: Generate bounding boxes
+    if args.mask_area_mode in [0, 1]:
+        if args.mask_area_mode == 0:
+            lambdas = torch.sqrt(lam * torch.ones(B, 1, 1, 1, device=x.device))
+        else:
+            lambdas = torch.sqrt(lam * torch.rand(B, 1, 1, 1, device=x.device))
+        
+        # lambdas = 0.0088*torch.ones((B,C,1,1), device=x.device, dtype=x.dtype)
+        m1 = lambdas.max()
+        m2 = lambdas.min()
+        Wb = (lambdas * W).squeeze(-1)
+        Hb = (lambdas * H).squeeze(-1)
+    elif args.mask_area_mode in [2, 3]:
+        # Assuming W and H are defined
+        # Step 1: Generate random Wb
+        Wb = torch.rand(B, 1, 1, device=x.device) * W  # Random Wb
+
+        # Step 2: Calculate max allowable Hb for each Wb to satisfy Wb*Hb <= 0.5*W*H
+        if args.mask_area_mode == 2:
+            lambdas = lam*torch.ones(B, 1, 1, device=x.device)
+            Hb = (lambdas * W * H) / Wb
+        else:
+            lambdas = lam*torch.rand(B, 1, 1, device=x.device)
+        
+            max_Hb = (lambdas * W * H) / Wb
+
+            # Step 3: Generate random Hb within [0, max_Hb]
+            Hb = torch.rand(B, 1, 1, device=x.device) * max_Hb
+
+        # Ensure Hb does not exceed H
+        Hb = torch.min(Hb, H * torch.ones_like(Hb))
+
+    # Step 4: Create masks
+    x_range = torch.arange(W, device=x.device)[None, :].expand(B, C, H, W)
+    y_range = torch.arange(H, device=x.device)[:, None].expand(B, C, H, W)
+
+    x_min = torch.clamp(max_indices_unraveled[..., 1][..., None, None] - Wb[..., None] // 2, 0, W)
+    y_min = torch.clamp(max_indices_unraveled[..., 0][..., None, None] - Hb[..., None] // 2, 0, H)
+
+    x_max = torch.clamp(x_min + Wb[..., None], 0, W)
+    y_max = torch.clamp(y_min + Hb[..., None], 0, H)
+
+    masks = (x_range >= x_min) & (x_range < x_max) & (y_range >= y_min) & (y_range < y_max)
+
+    # Step 5: Extract and paste patches
+    # patches = x_shuffle * masks
+    # x[masks] = patches[masks]
+    x = x*~masks + x_shuffle*masks
+
+    target_shuffled = target[shuffle_idx]
+    p_src = torch.sum(masks, dim=[1,2,3])/(C*W*H)
+    p_tar = 1 - p_src
+    m_tar = p_tar.max()
+    m_tar_m = p_tar.min()
+    m_src = p_src.max()
+    m_src_m = p_src.min()
+    
+    computation_loss_components = [
+        2,
+        [p_tar, p_src],
+        [target, target_shuffled]
+    ]
+
+    return x, computation_loss_components
 
 
 def fmmix2(args, x: torch.Tensor, target: torch.Tensor):
@@ -126,61 +204,6 @@ def fmmix2(args, x: torch.Tensor, target: torch.Tensor):
     ]
 
     return x, computation_loss_components
-
-
-def fmmix1(args, x: torch.Tensor, target: torch.Tensor):
-    # Assuming x is your input tensor with shape (B, C, H, W)
-    B, C, H, W = x.shape
-    lam = args.alpha
-    # Step 1: Shuffle x across B
-    shuffle_idx = torch.randperm(B)
-    x_shuffle = x[shuffle_idx]
-
-    # Step 2: Find the highest value in each feature map of x_shuffle
-    max_val_indices = torch.argmax(x_shuffle.view(B, C, -1), dim=2) # Indices of max values
-    max_indices_unraveled = torch.stack((max_val_indices // W, max_val_indices % W), dim=-1)
-
-    # Step 3: Generate bounding boxes
-    lambdas = torch.sqrt(lam * torch.rand(B, 1, 1, 1, device=x.device))
-    # lambdas = 0.0088*torch.ones((B,C,1,1), device=x.device, dtype=x.dtype)
-    m1 = lambdas.max()
-    m2 = lambdas.min()
-    Wb = (lambdas * W).squeeze(-1)
-    Hb = (lambdas * H).squeeze(-1)
-
-    # Step 4: Create masks
-    x_range = torch.arange(W, device=x.device)[None, :].expand(B, C, H, W)
-    y_range = torch.arange(H, device=x.device)[:, None].expand(B, C, H, W)
-
-    x_min = torch.clamp(max_indices_unraveled[..., 1][..., None, None] - Wb[..., None] // 2, 0, W)
-    y_min = torch.clamp(max_indices_unraveled[..., 0][..., None, None] - Hb[..., None] // 2, 0, H)
-
-    x_max = torch.clamp(x_min + Wb[..., None], 0, W)
-    y_max = torch.clamp(y_min + Hb[..., None], 0, H)
-
-    masks = (x_range >= x_min) & (x_range < x_max) & (y_range >= y_min) & (y_range < y_max)
-
-    # Step 5: Extract and paste patches
-    # patches = x_shuffle * masks
-    # x[masks] = patches[masks]
-    x = x*~masks + x_shuffle*masks
-
-    target_shuffled = target[shuffle_idx]
-    p_src = torch.sum(masks, dim=[1,2,3])/(C*W*H)
-    p_tar = 1 - p_src
-    m_tar = p_tar.max()
-    m_tar_m = p_tar.min()
-    m_src = p_src.max()
-    m_src_m = p_src.min()
-    
-    computation_loss_components = [
-        2,
-        [p_tar, p_src],
-        [target, target_shuffled]
-    ]
-
-    return x, computation_loss_components
-
 
 def get_ks_maxft(x_size):
     if x_size == 2:
@@ -252,4 +275,3 @@ def fmmix4(args, x:torch.Tensor, target:torch.Tensor):
         [target, target_shuffled]
     ]
     return x, computation_loss_components
-

@@ -11,7 +11,7 @@ Khoa Tho Anh Nguyen, Ngoc Hong Tran, Vinh Quang Dinh
 <img src="doc/images/Main_Pipeline.png" width="100%"/>
 
 ### Abstract 
-Data augmentation, pivotal for enhancing model performance and generalization, has seen significant advancements with mixed-sample techniques that blend elements from multiple training instances. Despite their success, these methods face challenges like generating unrealistic samples and potential performance degradation with excessive use. Our study explores the application of traditional mixed-sample augmentations at the feature level within Convolutional Neural Networks (CNNs), acknowledging existing limitations and untapped potential. This exploration aims to understand how such an approach might enhance generalization by encouraging the model to learn more abstract representations. Drawing on insights from this investigation, we propose FFMix, a collection of four innovative feature-level augmentation methods. These methods introduce region-focused strategies and sophisticated label mixing ratios, informed by area and semantic information, to ensure coherent augmentation. Our extensive analysis of CIFAR-100 and Tiny ImageNet datasets reveals that feature-level augmentations yield an improvement of 5.43% and 6.73% over the baseline, surpassing conventional input-level augmentations like Mixup (by 2.52% and 4.35%) and CutMix (by 1.83% and 2.88%). Additionally, our research delves into combining FFMix with classic methods like Mixup and CutMix. When FFMix is integrated with established methods such as Mixup, we observe an additional enhancement of 2.91% and 4.46% over Mixup alone.
+Data augmentation, pivotal for enhancing model performance and generalization, has seen significant advancements with mixed-sample techniques that blend elements from multiple training instances. Despite their success, these methods face challenges like generating unrealistic samples and potential performance degradation with excessive use. Our study explores the application of traditional mixed-sample augmentations at the feature level within Convolutional Neural Networks (CNNs), acknowledging existing limitations and untapped potential. This exploration aims to understand how such an approach might enhance generalization by encouraging the model to learn more abstract representations. Drawing on insights from this investigation, we propose FFMix, a collection of four innovative feature-level augmentation methods. These methods employ region-specific augmentation strategies, including Channel Max Position Detector, which focuses on peak activation of each channel, and Top k Channel Patches Detector, which selects the most informative patches of each channel based on average values for varied augmentation. They also use advanced label mixing ratios determined by Feature Map Area Ratio, which calculates mixed labels based on feature area contributions within a mask, and Semantic Information Estimator, which assesses feature contributions by quantifying semantic information in each channel’s feature map, ensuring coherent augmentation. We conducted nine experiments across three tasks (generalization, fine-grained, and sound classification) using the FMMix technique on five datasets and models. Our approach tested four FMMix methods, comparing the best one with techniques like Mixup, Manifold Mixup, and CutMix and analyzing hyperparameters and loss landscapes. The best-performing FMMix method showed improved generalization and reliability over traditional methods, with a slight increase in resource use.
 
 ### Comparison among Mixup, Manifold Mixup, CutMix, and FMMix.
 FMMix represents an innovative approach that builds on
@@ -47,7 +47,7 @@ The table outlines the combinations of our proposed feature map and label mixing
 6. [Citation](#citation)
 
 ## Results - Checkpoints and Test
-**Table 1 (in our paper):** Performance comparison of Mixup and CutMix techniques across various layers on CIFAR-100. The highest accuracies are highlighted in bold, and entries in green indicate an enhancement over the baseline accuracy of 74.57%. * denotes the input level augmentation.
+**Table 3 (in our paper):** Performance comparison of Mixup and CutMix techniques across various layers on CIFAR-100. The highest accuracies are highlighted in bold, and entries in green indicate an enhancement over the baseline accuracy of 74.57%. * denotes the input level augmentation.
 
 | Layer     | Mixup   | CutMix     | 
 |-----------------------|------------|------------|
@@ -57,7 +57,7 @@ The table outlines the combinations of our proposed feature map and label mixing
 | [3]  | 76.20 (+1.63)  <br> [Download](https://drive.google.com/drive/folders/1zZpU5VMdTRbrDOEsjCyguUfB9dw9cwi2?usp=drive_link)     | 76.84 (+2.27)  <br> [Download](https://drive.google.com/drive/folders/1WtyhZSaCKyUKZJ7w1ekSASZ3BRW0IrQC?usp=drive_link)    |
 | [4]  | 77.11 (+2.54) <br> [Download](https://drive.google.com/drive/folders/1bxepqUqK_u9t0vKRO1Gc99n8Yhcwbmbm?usp=drive_link)     | 77.16 (+2.59)  <br> [Download](https://drive.google.com/drive/folders/1qXBGIK0eb4NvH_xKVtkIjybuWfSXl5HL?usp=drive_link)     | 
 
-**Table 2 (in our paper):** Performance comparison of Mixup and CutMix techniques across various combinations of hidden layers on CIFAR-100. The highest accuracies are highlighted in bold, and entries in green indicate an enhancement over the baseline accuracy of 74.57%. augmentation.
+**Table 4 (in our paper):** Performance comparison of Mixup and CutMix techniques across various combinations of hidden layers on CIFAR-100. The highest accuracies are highlighted in bold, and entries in green indicate an enhancement over the baseline accuracy of 74.57%. augmentation.
 
 | Layer     | Mixup   | CutMix     |     
 |-----------------------|------------|------------|
@@ -68,7 +68,7 @@ The table outlines the combinations of our proposed feature map and label mixing
 | [2, 3, 4]  | Fail       | 78.38 (+3.81) <br> [Download](https://drive.google.com/drive/folders/111xMV_fRHIDnQogTNg5S3arp1EQbpwE8?usp=drive_link)      | 
 | [1, 2, 3, 4]  | 79.00 (+4.43) <br> [Download](https://drive.google.com/drive/folders/1Ghn_X4CNwWZldR6QGMJ3Bd_tTAHPL_Qq?usp=drive_link)      | 79.40 (+4.83) <br> [Download](https://drive.google.com/drive/folders/1zpLRDwDoTLHY_FfEz35XJCZmss1y70aI?usp=drive_link)      | 
 
-**D Table 5 (in our paper):** Performance comparison of the four proposed FMMix techniques across various hidden layers on CIFAR-100. The highest accuracies are highlighted in bold, and entries in green indicate an enhancement over the baseline accuracy of 74.57%.
+**D Table 6 (in our paper):** Performance comparison of the four proposed FMMix techniques across various hidden layers on CIFAR-100. The highest accuracies are highlighted in bold, and entries in green indicate an enhancement over the baseline accuracy of 74.57%.
 
 | Layer     | FMMix1   | FMMix2     |  FMMix3   | FMMix4| 
 |-----------------------|------------|------------|----|------------|
@@ -77,7 +77,7 @@ The table outlines the combinations of our proposed feature map and label mixing
 | [3] | 76.31 (+1.74)       <br> [Download](https://drive.google.com/drive/folders/1HxnaQDWEtYt_xh32vlhZGz6N-By9BKoI?usp=drive_link)  |  Fail      | 75.52 (+0.95) <br> [Download](https://drive.google.com/drive/folders/1o_dbuLhn-eL1Mk1Xi0Xi6Uim0qPaoDVG?usp=drive_link)  | 75.90 (+1.33) <br> [Download](https://drive.google.com/drive/folders/1FmKfKlpptZQU7GSZC06P-rREjV-odBvE?usp=drive_link)  |
 | [4]  | 77.39 (+2.82)      <br> [Download](https://drive.google.com/drive/folders/1lTVPDMLsHL-8iXYs8BmY-AbCKxTnZUV2?usp=drive_link)  | 76.88 (+2.31)       <br> [Download](https://drive.google.com/drive/folders/1njUbRPu133nKS-F6mUwl4BslkQ3mfWr7?usp=drive_link)  | 76.97 (+2.40) <br> [Download](https://drive.google.com/drive/folders/1G3Y5tdlMk7NkvE_C5ADvuw16pBfoCMzk?usp=drive_link)  |  76.94 (+2.37) <br> [Download](https://drive.google.com/drive/folders/1ANBwX1UNcNV2qdJpX8YAd_Biirfzse1y?usp=drive_link)  |
 
-**Table 6 (in our paper):** Performance comparison of the four proposed FMMix techniques across various combinations of hidden layers on CIFAR-100. The highest accuracies are highlighted in bold, and entries in green indicate an enhancement over the baseline accuracy of 74.57%.
+**Table 7 (in our paper):** Performance comparison of the four proposed FMMix techniques across various combinations of hidden layers on CIFAR-100. The highest accuracies are highlighted in bold, and entries in green indicate an enhancement over the baseline accuracy of 74.57%.
 
 | Layer     | FMMix1   | FMMix2     |  FMMix3   | FMMix4| 
 |-----------------------|------------|------------|----|----|
@@ -89,22 +89,18 @@ The table outlines the combinations of our proposed feature map and label mixing
 | [1, 2, 3, 4]  |  80.00 (+5.43)     <br> [Download](https://drive.google.com/drive/folders/10xhYQqLywVIwwrGXS8gyqShUdB3euKvb?usp=drive_link) | 79.88 (+5.31)       <br> [Download](https://drive.google.com/drive/folders/11Gb28xWztPtfUptGjc37lSzrvVPUlg1g?usp=drive_link) | 79.70 (+5.13) <br> [Download](https://drive.google.com/drive/folders/1Efm0swsgsZXinCZ-8YFCAo9CMJCmrqe_?usp=drive_link) | 79.74 (+5.17) <br> [Download](https://drive.google.com/drive/folders/12Jh9m-GhceiJgzTjOzbvAyQfaQzR7SzZ?usp=drive_link) |
 
 
-**Table 7 (in our paper):** Test Accuracy Comparison of Mixup, Manifold, CutMix, and FMMix1 on CIFAR-100 and TinyImageNet Datasets. Entries in bold represent the highest accuracy achieved for each method. Green highlights denote improvements in accuracy, while red highlights signify decreases, all in comparison to the baseline accuracy of 74.57%.
+**Table 8 (in our paper):** Accuracy (%) on CIFAR100 and TinyImageNet using Mixup, Manifold Mixup, CutMix, and FMMix. Bold indicates the highest accuracy, and underline indicates the second highest.
 
-| Layer     | CIFAR100   | TINY200     | 
-|-----------------------|------------|------------|
-| Baseline      | 74.57 (0.00)      <br> [Download](https://drive.google.com/drive/folders/1eKjQq5g7AsQCNE0_dhtjb_2K2EHVx3E7?usp=drive_link) | 58.46 (0.00)      <br> [Download](https://drive.google.com/drive/folders/1zChwzvoExiTBk06udibe1TE_BIP40gDB?usp=drive_link) |
-| Mixup   | 77.48 (+2.91)      <br> [Download](https://drive.google.com/drive/folders/1D0fwSMyXuo1YIbwULDEk_1tDIGYGtOAi?usp=drive_link) | 60.84 (+2.38)     <br> [Download](https://drive.google.com/drive/folders/1ebSnyQ2xllb3ZPELDdAIKLSI1ARfl-sM?usp=drive_link) |
-| *Manifold Mixup_[0, 1, 2] | 76.86 (+2.29)      <br> [Download](https://drive.google.com/drive/folders/1EQLdHd-6dIfU9Nd2_C1fhjIByNLevUX_?usp=drive_link) | 54.43 (-4.03)      <br> [Download](https://drive.google.com/drive/folders/19BbdMUsCV1jKVzVS-4X0Twezd2n-7hRf?usp=drive_link) |
-| Manifold Mixup_[0, 1, 2, 3] | 76.93 (+2.36)      <br> [Download](https://drive.google.com/drive/folders/1IN3zGnTuyZbfqJsNRej9lXTzKU86zzLV?usp=drive_link) | 54.53 (-3.93)      <br> [Download](https://drive.google.com/drive/folders/1sU96X4QDtHow6FBP_64TmZ678uvCaxm8?usp=drive_link) |
-| Manifold Mixup_[0, 1, 2, 3, 4] | 77.09 (+2.52)    <br> [Download](https://drive.google.com/drive/folders/1vH06n6fdf3Rp5nvWIkx2E8LsQVn4EpcD?usp=drive_link) | 54.16 (-4.30)      <br> [Download](https://drive.google.com/drive/folders/1r1RL1kckcEBkQVmw2vOpI5b2TzDPeYN8?usp=drive_link) |
-| CutMix | 78.17 (+3.60)      <br> [Download](https://drive.google.com/drive/folders/10j3St78vuzmA6yfC06nNVZaRvcAZSDlL?usp=drive_link) | 62.31 (+3.85)      <br> [Download](https://drive.google.com/drive/folders/1Pv7ARGKz-ejpewLOHQ4uF75elOYeVSMF?usp=drive_link) |
-|FMMix1_[1] | 79.48 (+4.91)      <br> [Download](https://drive.google.com/drive/folders/1GTBjc1GmTSU_vxLgZ9T9c-bA7odKL82k?usp=drive_link) | 61.89 (+3.43)      <br> [Download](https://drive.google.com/drive/folders/1oa7RRq0JeKytq-QgODeGIFq2xe48RnkI?usp=drive_link) |
-| FMMix1_[1, 2]  | 79.73 (+5.16)     <br> [Download](https://drive.google.com/drive/folders/1wPJ3Maqk96OfXoNTrMPVkHaMKDWJwWFg?usp=drive_link) | 62.42 (+3.96)      <br> [Download](https://drive.google.com/drive/folders/1GDJTbJ20qBHTkkvMGA0v0bDlruYqvmRZ?usp=drive_link) |
-| FMMix1_[1, 2, 3]  | 79.74 (+5.17)     <br> [Download](https://drive.google.com/drive/folders/1LyTZhc-k5iSs7Tn8hbnBEztVvFQcTHqw?usp=drive_link) | 64.60 (+6.14)      <br> [Download](https://drive.google.com/drive/folders/1XuxlkQllf5qom34tppzEzA3B_72v12D2?usp=drive_link) |
-| FMMix1  | 80.00 (+5.43)      <br> [Download](https://drive.google.com/drive/folders/1bkP5V59M2hsHaTDkur6YdWUIimxosYYH?usp=drive_link) | 65.19 (+6.73)      <br> [Download](https://drive.google.com/drive/folders/1RjRFebTOQQDzEtyckLdmRURCcqd-OWuK?usp=drive_link) |
-| Mixup + FMMix1  | 80.39 (+5.82)      <br> [Download](https://drive.google.com/drive/folders/1OPYtNDwlp9JJfB5GzMOQD8fIa9D4M2P7?usp=drive_link) | 65.30 (+6.84)      <br> [Download](https://drive.google.com/drive/folders/1hGjWMKDrguUb1F51sGdqve_-5YTyBMMe?usp=drive_link) |
-| CutMix + FMMix1  | 79.74 (+5.17)     <br> [Download](https://drive.google.com/drive/folders/1IJ9d_SW96Ja2qdmzFbbviW8svUgKsn8G?usp=drive_link) | 65.14 (+6.68)      <br> [Download](https://drive.google.com/drive/folders/1KkudHI2o5gokFd4xRA2_mQRZwz_CGM6y?usp=drive_link) |
+
+| Dataset/Model     | CIFAR100/ResNet18   | TINY200/ResNet18     | CIFAR100/ResNet50 | TINY200/ResNet50 | 
+|-----------------------|------------|------------|------------|------------|
+| Baseline      | 74.57      <br> [Download](https://drive.google.com/drive/folders/1eKjQq5g7AsQCNE0_dhtjb_2K2EHVx3E7?usp=drive_link) | 58.46      <br> [Download](https://drive.google.com/drive/folders/1zChwzvoExiTBk06udibe1TE_BIP40gDB?usp=drive_link) | 74.63 <br> [Download](https://drive.google.com/drive/folders/1pHOSFVhoDQ4MfilF-VDPaHDD56TNBlfj?usp=drive_link)| 61.52 <br> [Download](https://drive.google.com/drive/folders/1phDSxUFAg-OXaGbJaiSDVjXmiJZlH4-I?usp=sharing)|
+| Mixup   | 77.48      <br> [Download](https://drive.google.com/drive/folders/1D0fwSMyXuo1YIbwULDEk_1tDIGYGtOAi?usp=drive_link) | 60.84     <br> [Download](https://drive.google.com/drive/folders/1ebSnyQ2xllb3ZPELDdAIKLSI1ARfl-sM?usp=drive_link) | 79.07 <br> [Download](https://drive.google.com/drive/folders/1nth_MqXZXII_CrZW21RCzaTnuJcYhvUh?usp=drive_link)| 66.52 <br> [Download](https://drive.google.com/drive/folders/1OuweQrtWppFMM5XtEBeIcUV1Y0NiD-gR?usp=drive_link)|
+| *Manifold Mixup_[0, 1, 2] | 76.86      <br> [Download](https://drive.google.com/drive/folders/1EQLdHd-6dIfU9Nd2_C1fhjIByNLevUX_?usp=drive_link) | 54.43      <br> [Download](https://drive.google.com/drive/folders/19BbdMUsCV1jKVzVS-4X0Twezd2n-7hRf?usp=drive_link) | 79.96 <br> [Download](https://drive.google.com/drive/folders/1nNnf8Q8diFBx4RrWkUm1A6p3AgQvahVN?usp=drive_link)| 58.78 <br> [Download](https://drive.google.com/drive/folders/1Tu7weZVlfJaDrIvRD5C9ALE4oWN_RI1b?usp=drive_link) | 
+| CutMix | 78.17       <br> [Download](https://drive.google.com/drive/folders/10j3St78vuzmA6yfC06nNVZaRvcAZSDlL?usp=drive_link) | 62.31      <br> [Download](https://drive.google.com/drive/folders/1Pv7ARGKz-ejpewLOHQ4uF75elOYeVSMF?usp=drive_link) | 80.42 <br> [Download](https://drive.google.com/drive/folders/103NeQ0rMuglajSimBdUBCPZf_Y7xUo4G?usp=drive_link) | 67.92 <br> [Download](https://drive.google.com/drive/folders/1vqsgb7OXdPkug8nadjry8N1SKw2FlYpF?usp=drive_link) |
+| FMMix  | 80.00      <br> [Download](https://drive.google.com/drive/folders/1bkP5V59M2hsHaTDkur6YdWUIimxosYYH?usp=drive_link) | 65.19      <br> [Download](https://drive.google.com/drive/folders/1RjRFebTOQQDzEtyckLdmRURCcqd-OWuK?usp=drive_link) | 81.06  <br> [Download](https://drive.google.com/drive/folders/1aJxWTISflMiVo8Nuaehm01KJwEPC2zXk?usp=drive_link) | 69.7 <br>  [Download](https://drive.google.com/drive/folders/1RJVHQHUFNMOrzuXusqP6fyInlNCm4QeR?usp=drive_link) |
+| Mixup + FMMix  | 80.39      <br> [Download](https://drive.google.com/drive/folders/1OPYtNDwlp9JJfB5GzMOQD8fIa9D4M2P7?usp=drive_link) | 65.30      <br> [Download](https://drive.google.com/drive/folders/1hGjWMKDrguUb1F51sGdqve_-5YTyBMMe?usp=drive_link) | 81.38 <br> [Download](https://drive.google.com/drive/folders/1v8bPL7akfgCeJ2CPaKZBbyeFIy26QQin?usp=drive_link)| 69.46 <br> [Download](https://drive.google.com/drive/folders/1eWN_fcU4cSAJuWt7Mwvnzjwd6iZcCoal?usp=drive_link)|
+| CutMix + FMMix  | 79.74     <br> [Download](https://drive.google.com/drive/folders/1IJ9d_SW96Ja2qdmzFbbviW8svUgKsn8G?usp=drive_link) | 65.14      <br> [Download](https://drive.google.com/drive/folders/1KkudHI2o5gokFd4xRA2_mQRZwz_CGM6y?usp=drive_link) | 81.74  <br> [Download](https://drive.google.com/drive/folders/1SpnGqDfTN8XdJ2ZBsL3RY9evpW4RDpXA?usp=drive_link)| 69.87 <br> [Download](https://drive.google.com/drive/folders/1s2_SHJffGOgnFW7oRfw_W5U3Mfip9gb8?usp=drive_link)|
 
 
 <!-- | Layer     | Mixup   | CutMix     |     
@@ -154,13 +150,13 @@ These are two examples indicate how to train FMMix1 (use 4 layers in the network
 ### CIFAR100
 - Example: FMMix1 - Combination of 4 layers run
 ```python
-python main.py --name="CIFAR100_PR18_FMMIX1_RANDLS1234"  --dataset='CIFAR100'  --model='resnet18'  --lr=0.1  --momentum=0.9 --decay=0.0001 --gammas 0.1 0.1 --schedule 100 150  --batch_size=128  --epochs=200 --fm_mix_flag  --p_fm_mix=1.0  --fm_augment_name="fmmix1"  --is_fm_mixup  --mix_alg="fmmix"  --alpha=0.5 --rand_layers --choice_layers 1 2 3 4  --save_path='save_path'
+python main.py --name="CIFAR100_PR50_FMMIX1_RANDLS1234_DRMA50_2"  --dataset='CIFAR100'  --model='resnet50'  --lr=0.1  --momentum=0.9 --decay=0.0001 --gammas 0.1 0.1 --schedule 100 150  --batch_size=128  --epochs=200 --fm_mix_flag  --p_fm_mix=1.0  --fm_augment_name="fmmix1"  --is_fm_mixup  --mix_alg="fmmix"  --alpha=0.5 --rand_layers --choice_layers 1 2 3 4  --save_path='save_path'  --mask_area_mode 1
 ```
 
 ### Tiny-Imagenet-200
 - Example: FMMix1 - Combination of 4 layers run
 ```python
-python main.py --name="T200_PR18_FMMIX1_RANDLS1234"  --dataset='TINYIMAGENET200'  --model='resnet18'  --lr=0.1  --momentum=0.9 --decay=0.0001 --gammas 0.1 0.1 --schedule 75 150  --batch_size=128  --epochs=200 --fm_mix_flag  --p_fm_mix=1.0  --fm_augment_name="fmmix1"  --is_fm_mixup  --mix_alg="fmmix"  --alpha=0.5 --rand_layers --choice_layers 1 2 3 4  --save_path='save_path'
+python main.py --name="T200_PR50_FMMIX1_RANDLS1234_DRMA50_2"  --dataset='TINYIMAGENET200'  --model='resnet50'  --lr=0.1  --momentum=0.9 --decay=0.0001 --gammas 0.1 0.1 --schedule 75 150  --batch_size=128  --epochs=200 --fm_mix_flag  --p_fm_mix=1.0  --fm_augment_name="fmmix1"  --is_fm_mixup  --mix_alg="fmmix"  --alpha=0.5 --rand_layers --choice_layers 1 2 3 4  --save_path='save_path'  --mask_area_mode 1
 
 ```
 ## Evaluation
@@ -184,7 +180,7 @@ If you found FMMix useful in your research, please consider starring ⭐ us on G
 @article{
       title={{Enhancing Feature Diversity: MixUp, CutMix, and FMMix for Diversifying Feature Representations}},
       author={Khoa Tho Anh Nguyen, Ngoc Hong Tran, Vinh Quang Dinh},
-      journal={}, 
+      journal={IEEE ACCESS}, 
       year={2024}
     }
 ```

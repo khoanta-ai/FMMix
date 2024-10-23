@@ -8,12 +8,13 @@ import torch
 import numpy as np
 from tqdm import tqdm
 import torch.nn as nn
+import random
 from datetime import datetime
 
-from model import ResNet18
+from model import ResNet18, ResNet50 
 from dataloader import load_data
 from orig_mixup import mixup_data, mixup_criterion, cutmix_data
-from utils import AverageMeter, colorstr, print_batch, prepare_train, accuracy, adjust_learning_rate
+from utils import AverageMeter, colorstr, print_batch, prepare_train, accuracy, adjust_learning_rate 
 
 
 import logging
@@ -25,11 +26,16 @@ seed = 123
 torch.manual_seed(seed)
 torch.cuda.manual_seed(seed)
 np.random.seed(seed)
+random.seed(seed)
 torch.backends.cudnn.deterministic = True
 torch.backends.cudnn.benchmark = False
 
 device = "cuda" if torch.cuda.is_available() else 'cpu'
 
+model_dict = {
+    "resnet18": ResNet18,
+    "resnet50": ResNet50,
+}
 
 def test(args, model, dataloaders, history):
     
@@ -79,8 +85,8 @@ def test(args, model, dataloaders, history):
     history["val_loss"].append(losses.avg)
     history["val_acc"].append(top1.avg)
     return history
-    
-    
+
+
 def train(args, model, optimizer, dataloaders, epoch, history, cur_path):
     
     LOGGER.info(colorstr('bright_yellow', 'bold', '\n%20s' + '%15s' * 3) %
@@ -97,7 +103,8 @@ def train(args, model, optimizer, dataloaders, epoch, history, cur_path):
 
     
     current_learning_rate = adjust_learning_rate(optimizer, epoch, args)
-    
+    if args.pfmmix_mode is not None:
+        args.p_fm_mix = pfmmix_step_based(epoch, args.pfmmix_mode, num_epoch=args.epochs)
     phase = "train"
     model.train()
     fm_mix_flag = args.fm_mix_flag
@@ -115,7 +122,8 @@ def train(args, model, optimizer, dataloaders, epoch, history, cur_path):
     cls_losses = AverageMeter()
     cls_corrects = AverageMeter()
 
-    for inputs, labels in _phase:
+    for step, data in enumerate(_phase):
+        inputs, labels = data
         inputs = inputs.to(device)
         labels = labels.to(device)
 
@@ -138,7 +146,7 @@ def train(args, model, optimizer, dataloaders, epoch, history, cur_path):
 
             elif args.mix_alg == "mixup_hidden":
                 au_layer = np.random.choice(args.choice_layers)
-                outputs, computation_loss_components = model(inputs, au_layer=au_layer, fm_mix=fm_mix_flag)
+                outputs, computation_loss_components = model(inputs, target=labels, au_layer=au_layer, fm_mix=fm_mix_flag)
                 loss = bce_loss(softmax(outputs), computation_loss_components)
 
 
@@ -267,6 +275,7 @@ def run(args, model, optimizer, dataloaders, path):
             # Save the best model
             torch.save(model.state_dict(), f"{cur_path}/best.pth")
 
+        
         # print({"train_loss": history["train_loss"][-1], "train_acc": history["train_acc"][-1],
         #            "val_loss": history["val_loss"][-1], "val_acc": history["val_acc"][-1], 
         #            "current_learning_rate":current_learning_rate, "best_val_acc_line":best_val_acc})
@@ -283,7 +292,6 @@ def run(args, model, optimizer, dataloaders, path):
     with open(os.path.join(cur_path, 'result.json'), "w") as outfile:
         json.dump(history, outfile)
     print({"best_epoch":history['best_epoch'], "best_val_acc":best_val_acc})
-    
     return model, best_val_acc
 
 
@@ -294,22 +302,25 @@ def experiment(args):
     if args.dataset.lower() == "cifar100":
         num_classes = 100
         stride=1
-        args.num_classes = num_classes
     elif args.dataset.lower() == "tinyimagenet200":
         num_classes = 200
-        args.num_classes = num_classes
         stride=2
     else:
         raise Exception(f"{args.dataset} dose not know num_classes")
 
-    model = ResNet18(args, num_classes=num_classes, stride=stride).to(device=device)
+    if not args.fm_mix_flag:
+        args.p_fm_mix = 0
+        print(f"{args.fm_mix_flag=} and {args.p_fm_mix=}")
+
+    args.num_classes = num_classes
+    
+    model = model_dict[args.model](args, num_classes=num_classes, stride=stride)
+    model = model.to(device=device)
     
     # define optimizer
     optimizer = torch.optim.SGD(model.parameters(), args.lr, momentum=args.momentum, weight_decay=args.decay)
     
-    if not args.fm_mix_flag:
-        args.p_fm_mix = 0
-        print(f"{args.fm_mix_flag=} and {args.p_fm_mix=}")
+    
 
     print(args)
 
@@ -320,7 +331,7 @@ def experiment(args):
     with open(os.path.join(exp_path, 'config.json'), 'w') as f:
         json.dump(args.__dict__, f, indent=4)
 
-    
+   
     best_mode, best_val_acc = run(args = args,
                                     model = model,
                                     optimizer = optimizer,
@@ -363,6 +374,13 @@ if __name__ == "__main__":
     parser.add_argument("--mix_fm_lv", default=None, type=str, help="Test Mixup or CutMix at feature map level")
     parser.add_argument('--choice_layers', type=int, nargs='+', default=None, help='choice from list layer')
     
+    # Test masked area shape and dynamic
+    ## 0: Fixed Square, 1: Dynamic Square, 2: Fixed Rectangle, 3: Dynamic Rectangle
+    parser.add_argument("--mask_area_mode", default=1, type=int, help="mask_area_mode ")
+
+    # Test p_fm_mix schedule
+    ## None: do not use, 0: incrase, 1: decrease
+    parser.add_argument("--pfmmix_mode", default=None, type=int, help="step scheduler for pfmmix mode")
     
     args = parser.parse_args()
     

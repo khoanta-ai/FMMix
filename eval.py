@@ -3,7 +3,7 @@ import time
 import json
 import torch
 import argparse
-from model import ResNet18
+from model import ResNet18, ResNet50 
 from utils import prepare_train
 from dataloader import load_data
 from main import test
@@ -15,7 +15,10 @@ torch.cuda.manual_seed(seed)
 torch.backends.cudnn.deterministic = True
 torch.backends.cudnn.benchmark = False
 device = "cuda" if torch.cuda.is_available() else 'cpu'
-
+model_dict = {
+    "resnet18": ResNet18,
+    "resnet50": ResNet50,
+}
 
 def eval(args, model, dataloaders):
     since = time.time()
@@ -38,22 +41,26 @@ def experiment(args):
     if args.dataset.lower() == "cifar100":
         num_classes = 100
         stride=1
-        args.num_classes = num_classes
     elif args.dataset.lower() == "tinyimagenet200":
         num_classes = 200
-        args.num_classes = num_classes
         stride=2
     else:
         raise Exception(f"{args.dataset} dose not know num_classes")
 
-    model = ResNet18(args, num_classes=num_classes, stride=stride).to(device=device)
-    model.load_state_dict(torch.load(args.weight_path))
-    # define optimizer
-    optimizer = torch.optim.SGD(model.parameters(), args.lr, momentum=args.momentum, weight_decay=args.decay)
-    
     if not args.fm_mix_flag:
         args.p_fm_mix = 0
         print(f"{args.fm_mix_flag=} and {args.p_fm_mix=}")
+
+    args.num_classes = num_classes
+    
+    model = model_dict[args.model](args, num_classes=num_classes, stride=stride)
+    model.load_state_dict(torch.load(args.weight_path))
+    model = model.to(device=device)
+    
+    # define optimizer
+    optimizer = torch.optim.SGD(model.parameters(), args.lr, momentum=args.momentum, weight_decay=args.decay)
+    
+    
 
     print(args)
 
@@ -61,13 +68,13 @@ def experiment(args):
     exp_path = os.path.join(args.save_path, name)
     os.makedirs(exp_path, exist_ok=True)
     
-    with open(os.path.join(exp_path, 'config.txt'), 'w') as f:
+    with open(os.path.join(exp_path, 'config.json'), 'w') as f:
         json.dump(args.__dict__, f, indent=4)
 
-    
+   
     best_mode, best_val_acc = eval(args = args,
                                     model = model,
-                                    dataloaders = dataloaders)    
+                                    dataloaders = dataloaders) 
 
 
 
